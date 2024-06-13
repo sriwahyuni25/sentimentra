@@ -13,8 +13,12 @@ class AnalysisController extends Controller
     public function singleAnalysis(Request $request)
     {
         // Validasi input
-        $validatedData = $request->validate([
-            'single' => 'required|string',
+        $request->validate([
+            'single' => 'required|string|min:1',
+        ], [
+            'single.required' => 'Text tidak boleh kosong.',
+            'single.string' => 'Text harus berupa string.',
+            'single.min' => 'Text tidak boleh kosong.',
         ]);
 
         $text = [
@@ -51,21 +55,22 @@ class AnalysisController extends Controller
         }
     }
 
+
     public function batchAnalysis(Request $request)
     {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt|max:2048',
+        ], [
+            'file.required' => 'File tidak boleh kosong.',
+            'file.file' => 'Harap pilih file yang valid.',
+            'file.mimes' => 'File harus berformat CSV atau TXT.',
+            'file.max' => 'File tidak boleh lebih dari 2048 KB.',
+        ]);
+
         $client = new Client();
         $url = 'http://127.0.0.1:5000/predict_csv';
 
         try {
-            $request->validate([
-                'file' => 'required|file|mimes:csv,txt|max:2048',
-            ], [
-                'file.required' => 'File tidak boleh kosong.',
-                'file.file' => 'Harap pilih file yang valid.',
-                'file.mimes' => 'File harus berformat CSV atau TXT.',
-                'file.max' => 'File tidak boleh lebih dari 2048 KB.',
-            ]);
-
             $file = $request->file('file');
             $filePath = $file->getPathname();
             $fileName = $file->getClientOriginalName();
@@ -78,12 +83,16 @@ class AnalysisController extends Controller
 
             // Memeriksa apakah file CSV memiliki kolom 'text'
             if (!in_array('text', $header)) {
-                return redirect()->back()->with('error', 'File tidak membaca kolom text');
+                return redirect()->back()->withErrors(['error' => 'File tidak memiliki kolom text']);
             }
 
-            // Memeriksa apakah file memiliki ekstensi .csv
-            if ($file->getClientOriginalExtension() !== 'csv') {
-                return redirect()->back()->with('error', 'File harus berupa csv');
+            // Membaca semua baris dari kolom 'text'
+            $records = $csv->getRecords();
+            $textColumn = array_column(iterator_to_array($records), 'text');
+
+            // Memeriksa apakah ada baris pada kolom 'text'
+            if (empty($textColumn)) {
+                return redirect()->back()->withErrors(['error' => 'Kolom text tidak memiliki baris']);
             }
 
             $response = $client->post($url, [
@@ -107,14 +116,12 @@ class AnalysisController extends Controller
                 }
                 return view('admin.batchanalysis.index', ['response' => $responseData]);
             } else {
-                return view('admin.batchanalysis.index')->with('error', 'Gagal mengirimkan data ke server.');
+                return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
             }
         } catch (\Exception $e) {
-            return view('admin.batchanalysis.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
-
-
 
 
     public function showData()
@@ -125,15 +132,12 @@ class AnalysisController extends Controller
 
     public function deleteData($id)
     {
-        try{
-            $sentiments = Single::where('id',$id)->first();
+        try {
+            $sentiments = Single::where('id', $id)->first();
             $sentiments->delete();
             return back();
-        }catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             return back()->with($e->getMessage());
         }
-
-
     }
 }

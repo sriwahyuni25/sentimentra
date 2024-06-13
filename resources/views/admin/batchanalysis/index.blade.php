@@ -4,9 +4,7 @@
         <h1>Analysis</h1>
         <nav>
             <ol class="breadcrumb">
-                {{-- <li class="breadcrumb-item"><a href="index.html">Home</a></li> --}}
-                <li class="breadcrumb-item"><a href="{{ url('/dashboard-sentimentra')}}">Home</a></li>
-                {{-- <a class="nav-link" href="{{ url('/historyanalysis') }}"> --}}
+                <li class="breadcrumb-item"><a href="{{ url('/dashboard-sentimentra') }}">Home</a></li>
                 <li class="breadcrumb-item">Analysis</li>
                 <li class="breadcrumb-item active">Batch Analysis</li>
             </ol>
@@ -17,8 +15,18 @@
         <div class="card-body">
             <h5 class="card-title">Batch Analysis</h5>
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- General Form Elements -->
-            <form action="{{ url('/batch-analysiscreate') }}"method="POST" enctype="multipart/form-data">
+            <form action="{{ url('/batch-analysiscreate') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
                     <label for="formFile" class="col-sm-2 col-form-label">Choose file</label>
@@ -36,24 +44,24 @@
             </form>
 
             @if (isset($response) && is_array($response))
-        <h5>Sentiment Result</h5>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Text</th>
-                    <th>Sentiment</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($response as $data)
-                    <tr>
-                        <td>{{ $data['text'] }}</td>
-                        <td>{{ $data['sentiment'] }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @endif
+                <h5>Sentiment Result</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Text</th>
+                            <th>Sentiment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($response as $data)
+                            <tr>
+                                <td>{{ $data['text'] }}</td>
+                                <td>{{ $data['sentiment'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
 
         </div>
     </div>

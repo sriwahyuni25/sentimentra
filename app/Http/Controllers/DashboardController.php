@@ -19,6 +19,10 @@ class DashboardController extends Controller
 
     public function test(Request $request)
     {
+    }
 
+    public function guest()
+    {
+        return view('guest.index');
     }
 }

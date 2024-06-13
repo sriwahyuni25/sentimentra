@@ -11,4 +11,5 @@ class TestData extends Model
 
     protected $table='testdata';
     protected $guarded=[''];
+    public $timestamps = false;
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\CobaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -103,4 +104,11 @@ Route::middleware('admin')->group(function () {
 
 Route::get('/test', [DashboardController::class, 'testaja']);
 Route::post('/admin/test', [DashboardController::class, 'test']);
+Route::post('/addtotestdata', [HistoryController::class, 'addToTestData']);
+Route::post('/deletefromtestdata/{id}', [HistoryController::class, 'deleteFromTestData']);
+Route::post('/deleteTestData/{id}', [TestDataController::class, 'delete']);
+Route::get('/guest-dashboard',[DashboardController::class,'guest']);
+
+
+
 

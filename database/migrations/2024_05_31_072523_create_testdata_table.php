@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text("text");
             $table->tinyInteger("sentiment");
+            $table->integer("single_id");
         });
     }
 

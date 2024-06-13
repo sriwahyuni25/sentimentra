@@ -19,4 +19,17 @@ class TestDataController extends Controller
         $data->delete();
         return redirect()->route('admin.testdata.index')->with('success', 'Data deleted successfully');
     }
+
+    public function delete($id)
+    {
+        $testdata = TestData::findOrFail($id);
+
+        if ($testdata) {
+            $testdata->delete();
+
+            return redirect()->back()->with('success', 'Data removed from testdata successfully!');
+        }
+
+        return redirect()->back()->with('error', 'Failed to remove data from testdata.');
+    }
 }
