@@ -27,12 +27,7 @@ class DashboardController extends Controller
 
     public function guest()
     {
-        return view('guest.index', [
-            'sentiment' => null,
-            'text' => null,
-            'error' => null,
-            'response' => null
-        ]);
+        return view('guest.index');
     }
 
     public function singleAnalysis(Request $request)
