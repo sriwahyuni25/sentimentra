@@ -65,15 +65,17 @@ class DashboardController extends Controller
             ]);
 
             // Kirim data ke view
-            return redirect()->route('guest.index', [
-                'sentiment' => $data['sentiment'],
-                'text' => $request->single,
-                'error' => null
-            ])->withFragment('about');
+            return redirect()->route('guest.index')
+                ->with('sentiment', $data['sentiment'])
+                ->with('text', $request->single)
+                ->with('error', null)
+                ->with('fragment', 'about');
         } catch (\Exception $e) {
             return redirect()->route('guest.index')
+                ->with('sentiment', null)
+                ->with('text', $request->single)
                 ->withErrors(['error' => 'Error fetching data from API: ' . $e->getMessage()])
-                ->withFragment('about');
+                ->with('fragment', 'about');
         }
     }
 
@@ -140,7 +142,9 @@ class DashboardController extends Controller
                         'text' => $data['text'],
                     ]);
                 }
-                return redirect()->route('guest.index', ['response' => $responseData])->withFragment('about');
+                return redirect()->route('guest.index')
+                    ->with('response', $responseData,)
+                    ->with('fragment', 'about');
             } else {
                 return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.'])->withFragment('about');
             }
