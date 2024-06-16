@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    {{-- <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors"> --}}
     <meta name="generator" content="Hugo 0.122.0">
-    <title>Starter Template · Bootstrap v5.3</title>
+    <title>Sentimentra</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/starter-template/">
 
@@ -154,12 +154,12 @@
                         aria-labelledby="single-tab">
 
                         <!-- General Form Elements -->
-                        <form action="{{ url('/textanalysis') }}" method="POST">
+                        <form action="{{ url('/guest/single-analysis') }}" method="POST">
                             @csrf
                             <div class="row mb-2 mt-3">
                                 <div class="col-sm-12">
                                     <input type="text" name="single" class="form-control"
-                                        placeholder="Masukkan Text" value="{{ old('single') }}">
+                                        placeholder="Masukkan Text">
                                 </div>
                             </div>
 
@@ -173,7 +173,7 @@
                     </div>
                     <div class="tab-pane fade" id="batch" role="tabpanel" aria-labelledby="batch-tab">
                         <!-- General Form Elements -->
-                        <form action="{{ url('/batch-analysiscreate') }}" method="POST"
+                        <form action="{{ url('/guest/batch-analysis') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-2 mt-3">
