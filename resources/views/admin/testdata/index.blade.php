@@ -5,7 +5,8 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('/dashboard-sentimentra') }}">Home</a></li>
-                <li class="breadcrumb-item active">Data Master</li>
+                <li class="breadcrumb-item">Data Master</li>
+                <li class="breadcrumb-item active">Test Data</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -32,7 +33,7 @@
                                 <th>No</th>
                                 <th>Text</th>
                                 <th>Sentiment</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -47,14 +48,14 @@
                                             <span>Negatif</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <form action="{{ url('/deleteTestData', $data->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 Remove
                                             </button>
                                         </form>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>
