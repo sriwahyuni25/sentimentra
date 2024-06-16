@@ -121,7 +121,7 @@
                             aria-labelledby="single-tab">
 
                             <!-- General Form Elements -->
-                            <form action="{{ url('/textanalysis') }}" method="POST">
+                            <form action="{{ url('/guest/single-analysis') }}" method="POST">
                                 @csrf
                                 <div class="row mb-2 mt-3">
                                     <div class="col-sm-12">
@@ -140,7 +140,7 @@
                         </div>
                         <div class="tab-pane fade" id="batch" role="tabpanel" aria-labelledby="batch-tab">
                             <!-- General Form Elements -->
-                            <form action="{{ url('/batch-analysiscreate') }}" method="POST"
+                            <form action="{{ url('/guest/batch-analysis') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row mb-2 mt-3">
