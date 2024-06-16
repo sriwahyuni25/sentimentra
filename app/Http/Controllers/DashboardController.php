@@ -23,6 +23,6 @@ class DashboardController extends Controller
 
     public function guest()
     {
-        return view('guest.index');
+        return view('guest.index'); 
     }
 }
