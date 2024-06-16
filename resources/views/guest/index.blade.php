@@ -397,6 +397,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     @include('template.component.style_js')
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('fragment') === 'about' || (isset($fragment) && $fragment === 'about'))
+                var element = document.getElementById('about');
+                if (element) {
+                    element.scrollIntoView();
+                }
+            @endif
+        });
         // {{-- chart pra sentimen --}}
         document.addEventListener("DOMContentLoaded", () => {
             new ApexCharts(document.querySelector("#praSentiment"), {
