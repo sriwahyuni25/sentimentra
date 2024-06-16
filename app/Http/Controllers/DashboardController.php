@@ -6,6 +6,7 @@ use App\Models\Single;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use League\Csv\Reader;
 
 class DashboardController extends Controller
@@ -26,19 +27,23 @@ class DashboardController extends Controller
 
     public function guest()
     {
-        return view('guest.index'); 
+        return view('guest.index');
     }
 
     public function singleAnalysis(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'single' => 'required|string|min:1',
         ], [
             'single.required' => 'Text tidak boleh kosong.',
             'single.string' => 'Text harus berupa string.',
             'single.min' => 'Text tidak boleh kosong.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->withFragment('about');
+        }
 
         $text = [
             'json' => [
@@ -60,24 +65,22 @@ class DashboardController extends Controller
             ]);
 
             // Kirim data ke view
-            return view('guest.index', [
+            return redirect()->route('guest.index', [
                 'sentiment' => $data['sentiment'],
                 'text' => $request->single,
                 'error' => null
-            ]);
+            ])->withFragment('about');
         } catch (\Exception $e) {
-            return view('guest.index', [
-                'sentiment' => null,
-                'error' => 'Error fetching data from API: ' . $e->getMessage(),
-                'text' => $request->single
-            ]);
+            return redirect()->route('guest.index')
+                ->withErrors(['error' => 'Error fetching data from API: ' . $e->getMessage()])
+                ->withFragment('about');
         }
     }
 
 
     public function batchAnalysis(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'file' => 'required|file|mimes:csv,txt|max:2048',
         ], [
             'file.required' => 'File tidak boleh kosong.',
@@ -85,6 +88,10 @@ class DashboardController extends Controller
             'file.mimes' => 'File harus berformat CSV atau TXT.',
             'file.max' => 'File tidak boleh lebih dari 2048 KB.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->withFragment('about');
+        }
 
         $client = new Client();
         $url = 'http://127.0.0.1:5000/predict_csv';
@@ -102,7 +109,7 @@ class DashboardController extends Controller
 
             // Memeriksa apakah file CSV memiliki kolom 'text'
             if (!in_array('text', $header)) {
-                return redirect()->back()->withErrors(['error' => 'File tidak memiliki kolom text']);
+                return redirect()->back()->withErrors(['error' => 'File tidak memiliki kolom text'])->withFragment('about');
             }
 
             // Membaca semua baris dari kolom 'text'
@@ -111,7 +118,7 @@ class DashboardController extends Controller
 
             // Memeriksa apakah ada baris pada kolom 'text'
             if (empty($textColumn)) {
-                return redirect()->back()->withErrors(['error' => 'Kolom text tidak memiliki baris']);
+                return redirect()->back()->withErrors(['error' => 'Kolom text tidak memiliki baris'])->withFragment('about');
             }
 
             $response = $client->post($url, [
@@ -133,12 +140,12 @@ class DashboardController extends Controller
                         'text' => $data['text'],
                     ]);
                 }
-                return view('guest.index', ['response' => $responseData]);
+                return redirect()->route('guest.index', ['response' => $responseData])->withFragment('about');
             } else {
-                return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+                return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.'])->withFragment('about');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withFragment('about');
         }
     }
 }

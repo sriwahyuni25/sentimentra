@@ -107,7 +107,7 @@ Route::post('/admin/test', [DashboardController::class, 'test']);
 Route::post('/addtotestdata', [HistoryController::class, 'addToTestData']);
 Route::post('/deletefromtestdata/{id}', [HistoryController::class, 'deleteFromTestData']);
 Route::post('/deleteTestData/{id}', [TestDataController::class, 'delete']);
-Route::get('/guest-dashboard',[DashboardController::class,'guest']);
+Route::get('/guest-dashboard',[DashboardController::class,'guest'])->name('guest.index');
 Route::post('/guest/single-analysis',[DashboardController::class,'singleAnalysis']);
 Route::post('/guest/batch-analysis',[DashboardController::class,'batchAnalysis']);
 
