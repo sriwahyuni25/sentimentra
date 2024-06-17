@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - Arsha Bootstrap Template</title>
+    <title>Sentimentra</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -45,29 +45,29 @@
 
             <a href="index.html" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="{{ asset('arsha/assets/img/logo.png') }}" alt=""> -->
+                {{-- <!-- <img src="{{ asset('arsha/assets/img/logo.png') }}" alt=""> --> --}}
                 <h1 class="sitename">SENTIMENTRA</h1>
             </a>
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="#hero" class="active">Beranda</a></li>
-                    <li><a href="#about">Analysis Sentiment</a></li>
-                    <li><a href="#services">Statistik</a></li>
-                    <li><a href="#portfolio">Wordcloud</a></li>
+                    <li><a href="#beranda" class="active">Beranda</a></li>
+                    <li><a href="#sentiment">Analysis Sentiment</a></li>
+                    <li><a href="#statistik">Statistik</a></li>
+                    <li><a href="#wordcloud">Wordcloud</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <a class="btn-getstarted" href="#about">Get Started</a>
+            <a class="btn-getstarted" href="#sentiment">Get Started</a>
 
         </div>
     </header>
 
     <main class="main">
 
-        <!-- Hero Section -->
-        <section id="hero" class="hero section">
+        <!-- Beranda Section -->
+        <section id="beranda" class="hero section">
 
             <div class="container">
                 <div class="row gy-4">
@@ -77,17 +77,17 @@
                         <p>Dengan Sentimentra, Anda dapat menganalisis sentimen teks secara otomatis untuk mengetahui
                             apakah teks tersebut bersifat positif atau negatif</p>
                     </div>
-                    <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-                        <img src="{{ asset('arsha/assets/img/hero-img.png') }}" class="img-fluid animated"
-                            alt="">
+                    <div class="col-lg-6 order-1 order-lg-2 lp" data-aos="zoom-out" data-aos-delay="200">
+                        <img src="{{ asset('arsha/assets/img/lp.png') }}" class="img-fluid animated"
+                            alt="" style="width: 90%;">
                     </div>
                 </div>
             </div>
 
-        </section><!-- /Hero Section -->
+        </section><!-- /Beranda Section -->
 
-        <!-- About Section -->
-        <section id="about" class="about section">
+        <!-- Sentiment Section -->
+        <section id="sentiment" class="sentiment section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -193,8 +193,8 @@
 
         </section><!-- /About Section -->
 
-        <!-- Services Section -->
-        <section id="services" class="services section">
+        <!-- Statistik Section -->
+        <section id="statistik" class="statistik section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -245,12 +245,12 @@
 
         </section><!-- /Services Section -->
 
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="portfolio section">
+        <!-- wordcloud Section -->
+        <section id="wordcloud" class="wordcloud section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Wordcloud</h2>
+                <h2 style="margin-bottom: 1px;">Wordcloud</h2>
             </div><!-- End Section Title -->
 
             <div class="container">
@@ -296,15 +296,8 @@
             <div class="container">
                 <div class="row justify-content-center text-center">
                     <div class="col-lg-6">
-                        <h4>Join Our Newsletter</h4>
-                        <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-                        <form action="forms/newsletter.php" method="post" class="php-email-form">
-                            <div class="newsletter-form"><input type="email" name="email"><input type="submit"
-                                    value="Subscribe"></div>
-                            <div class="loading">Loading</div>
-                            <div class="error-message"></div>
-                            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
-                        </form>
+                        <h4>Terimakasih Telah Mengunjungi Sentimentra</h4>
+                        <p>Kami berharap aplikasi ini dapat membantu Anda dalam menganalisis sentimen. Dukungan Anda sangat berarti bagi kami.</p>
                     </div>
                 </div>
             </div>
@@ -314,39 +307,29 @@
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
                     <a href="index.html" class="d-flex align-items-center">
-                        <span class="sitename">Arsha</span>
+                        <span class="sitename">Sentimentra</span>
                     </a>
                     <div class="footer-contact pt-3">
-                        <p>A108 Adam Street</p>
-                        <p>New York, NY 535022</p>
-                        <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-                        <p><strong>Email:</strong> <span>info@example.com</span></p>
+                        <p>Jl. Lohbener Lama No.08, Legok,</p>
+                        <p>Kec. Lohbener, Kabupaten Indramayu, Jawa Barat 45252</p>
+                        <p class="mt-3"><strong>Phone:</strong> <span>(021) 123-4567</span></p>
+                        <p><strong>Email:</strong> <span>support@sentimentra.com</span></p>
                     </div>
                 </div>
 
                 <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Useful Links</h4>
+                    <h4>Halaman</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-2 col-md-3 footer-links">
-                    <h4>Our Services</h4>
-                    <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#beranda">Beranda</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#sentimet">Analysis Sentiment</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#statistik">Statistik</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#wordcloud">Wordcloud</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-4 col-md-12">
-                    <h4>Follow Us</h4>
-                    <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+                    <h4>Ikuti Kami</h4>
+                    <p>Tetap terhubung dengan kami melalui media sosial untuk mendapatkan update terbaru dan informasi menarik lainnya:</p>
                     <div class="social-links d-flex">
                         <a href=""><i class="bi bi-twitter-x"></i></a>
                         <a href=""><i class="bi bi-facebook"></i></a>
@@ -359,7 +342,7 @@
         </div>
 
         <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">Arsha</strong> <span>All Rights Reserved</span>
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">Sentimentra</strong> <span>All Rights Reserved</span>
             </p>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
