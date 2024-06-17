@@ -27,12 +27,7 @@ class DashboardController extends Controller
 
     public function guest()
     {
-        return view('guest.index', [
-            'sentiment' => null,
-            'text' => null,
-            'error' => null,
-            'response' => null
-        ]);
+        return view('guest.index');
     }
 
     public function singleAnalysis(Request $request)
@@ -55,14 +50,11 @@ class DashboardController extends Controller
                 'text' => $request->single,
             ],
         ];
-
         $client = new Client();
         $url = 'http://127.0.0.1:5000/predict';
-
         try {
             $response = $client->request('POST', $url, $text);
             $data = json_decode($response->getBody(), true);
-
             // Simpan hasil analisis ke database
             Single::create([
                 'text' => $request->single,
@@ -70,19 +62,19 @@ class DashboardController extends Controller
             ]);
 
             // Kirim data ke view
-            return redirect()->route('guest.index')
-                ->with('sentiment', $data['sentiment'])
-                ->with('text', $request->single)
-                ->with('error', null)
-                ->with('fragment', 'about');
+            return redirect()->route('guest.index')->with([
+                'success' =>
+                'Analysis Berhasil Dilakukan!',
+                'sentiment' => $data['sentiment'],
+                'text' => $request->single,
+            ])->withFragment('about');
         } catch (\Exception $e) {
             return redirect()->route('guest.index')
-                ->with('sentiment', null)
-                ->with('text', $request->single)
                 ->withErrors(['error' => 'Error fetching data from API: ' . $e->getMessage()])
-                ->with('fragment', 'about');
+                ->withFragment('about');
         }
     }
+
 
 
     public function batchAnalysis(Request $request)
@@ -147,9 +139,12 @@ class DashboardController extends Controller
                         'text' => $data['text'],
                     ]);
                 }
-                return redirect()->route('guest.index')
-                    ->with('response', $responseData,)
-                    ->with('fragment', 'about');
+
+                return redirect()->route('guest.index')->with([
+                    'success' =>
+                    'Analysis Berhasil Dilakukan!',
+                    'response' => $responseData,
+                ])->withFragment('about');
             } else {
                 return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.'])->withFragment('about');
             }

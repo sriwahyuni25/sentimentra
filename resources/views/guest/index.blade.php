@@ -97,6 +97,16 @@
             <div class="container">
 
                 <div class="container mt-3">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -155,43 +165,50 @@
                                     </div>
                                 </div>
                             </form>
-
                         </div>
                     </div>
-                    @if (isset($sentiment))
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label"></label>
-                            <div class="col-sm-10">
-                                <label for="inputText" class="col-form-label">Kalimat
-                                    "{{ $text }}" mengarah ke kalimat
-                                    {{ $sentiment }}</label>
+
+                    @if (session('sentiment') && session('text'))
+                        <div class="row mb-3 mt-3">
+                            <div class="col-sm-12">
+                                <div class="alert alert-info">
+                                    <strong>Sentiment Analysis Result:</strong><br>
+                                    The sentence "<strong>{{ session('text') }}</strong>" has a sentiment of
+                                    "<strong>{{ session('sentiment') }}</strong>".
+                                </div>
                             </div>
                         </div>
                     @endif
-                    @if (isset($response) && is_array($response))
-                        <h5>Sentiment Result</h5>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Text</th>
-                                    <th>Sentiment</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($response as $data)
+
+                    @if (session('response') && is_array(session('response')))
+                        <div class="alert alert-info">
+
+                            <h5>Sentiment Result</h5>
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>{{ $data['text'] }}</td>
-                                        <td>{{ $data['sentiment'] }}</td>
+                                        <th>Text</th>
+                                        <th>Sentiment</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (session('response') as $data)
+                                        <tr>
+                                            <td>{{ $data['text'] }}</td>
+                                            <td>{{ $data['sentiment'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @endif
                 </div>
-
             </div>
 
-        </section><!-- /About Section -->
+        </section>
+        <!-- /About Section -->
+
+
 
         <!-- Services Section -->
         <section id="services" class="services section">
