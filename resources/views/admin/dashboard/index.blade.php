@@ -17,110 +17,58 @@
             <div class="col-lg-12">
                 <div class="row">
 
-                    {{-- <!-- Paslon 1 Card -->
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
+                    <!-- Test Data Card -->
+  <div class="col-xxl-4 col-md-6">
+    <div class="card info-card testdata-card">
+      <div class="card-body">
+        <h5 class="card-title">Test Data</h5>
+        <div class="d-flex align-items-center">
+          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+            <i class="ri-database-2-line"></i>
+          </div>
+          <div class="ps-3">
+            <h6>{{ $testDataCount }}</h6> <!-- Menampilkan jumlah test data -->
+          </div>
+        </div>
+      </div>
+    </div>
+</div><!-- End Test Data Card -->
 
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
+<!-- Train Data Card -->
+<div class="col-xxl-4 col-md-6">
+    <div class="card info-card traindata-card">
+      <div class="card-body">
+        <h5 class="card-title">Train Data</h5>
+        <div class="d-flex align-items-center">
+          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+            <i class="ri-database-2-fill"></i>
+          </div>
+          <div class="ps-3">
+            <h6>{{ $trainDataCount }}</h6> <!-- Menampilkan jumlah train data -->
+          </div>
+        </div>
+      </div>
+    </div>
+</div><!-- End Train Data Card -->
 
-                  <li><a class="dropdown-item" href="#">Pra</a></li>
-                  <li><a class="dropdown-item" href="#">Pemilu</a></li>
-                  <li><a class="dropdown-item" href="#">Pasca</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Paslon <span>| 01</span></h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-cart"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>Anies</h6>
-                    <span class="text-success small pt-1 fw-bold">Muhaimin</span>
-
-                  </div>
+<!-- Customers Card -->
+<div class="col-xxl-4 col-xl-12">
+    <div class="card info-card customers-card">
+        <div class="card-body">
+            <h5 class="card-title">Visitors</h5>
+            <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
                 </div>
-              </div>
-
-            </div>
-          </div><!-- End Paslon 1 Card -->
-
-           <!-- Paslon 2 Card -->
-           <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
-
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Pra</a></li>
-                  <li><a class="dropdown-item" href="#">Pemilu</a></li>
-                  <li><a class="dropdown-item" href="#">Pasca</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Paslon <span>| 02</span></h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-cart"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>Prabowo</h6>
-                    <span class="text-success small pt-1 fw-bold">Gibran</span>
-
-                  </div>
+                <div class="ps-3">
+                    <h6>{{ $visitorCount }}</h6>
                 </div>
-              </div>
-
             </div>
-          </div><!-- End Paslon 2 Card -->
+        </div>
+    </div>
+</div><!-- End Customers Card -->
 
-           <!-- Paslon 3 Card -->
-           <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
 
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Pra</a></li>
-                  <li><a class="dropdown-item" href="#">Pemilu</a></li>
-                  <li><a class="dropdown-item" href="#">Pasca</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Paslon <span>| 03</span></h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-cart"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>Ganjar</h6>
-                    <span class="text-success small pt-1 fw-bold">Mahfud</span>
-
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div><!-- End Paslon 3 Card --> --}}
 
                     <div class="col-lg-4">
                         <div class="card">

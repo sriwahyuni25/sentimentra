@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name' => 'Shani Indira Natio',
-            'email' => 'shaninatio@gmail.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
         ]);
         // Tambahkan data user lainnya sesuai kebutuhan

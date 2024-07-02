@@ -45,15 +45,44 @@
                                     <td>{{ $sentiment->text }}</td>
                                     <td>{{ $sentiment->sentiment }}</td>
                                     <td>
+                                        @if ($sentiment->status == 'false')
                                         <form id="delete-form-{{ $sentiment->id }}"
                                             action="{{ url('/historyanalysisdel/delete', $sentiment->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm"
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                            <a
+                                        href="{{url('/historyanalysisdel/falsestatus', $sentiment->id)}}"><span
+                                            class="badge bg-danger">
+                                            False</span></a>
+                                        </form>
+                                        @elseif($sentiment->status == 'true')
+                                        <form id="delete-form-{{ $sentiment->id }}"
+                                            action="{{ url('/historyanalysisdel/delete', $sentiment->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"
                                                 onclick="confirmDelete({{ $sentiment->id }})">
                                                 <i class="bi bi-trash"></i>
                                             </button>
+                                            <a
+                                        href="{{url('/historyanalysisdel/truestatus', $sentiment->id)}}"><span
+                                            class="badge bg-success">
+                                            True</span></a>
                                         </form>
+                                        @else
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="confirmDelete({{ $sentiment->id }})">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                            <a
+                                        href="{{url('/historyanalysisdel/falsestatus', $sentiment->id)}}"><span
+                                            class="badge bg-danger">
+                                            False</span></a>
+                                        @endif
+
                                     </td>
                                     <td>
                                         @php
@@ -85,4 +114,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+<script>
+    $('.btn-sm').on('click', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        var deleteForm = $('#deleteForm' + id);
+        Swal.fire({
+            title: 'Anda yakin?',
+            text: "Data akan dihapus secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteForm.submit();
+            }
+        });
+    });
+    </script>
 @endsection

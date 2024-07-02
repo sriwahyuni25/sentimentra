@@ -27,6 +27,9 @@
                             {{ session('error') }}
                         </div>
                     @endif
+                    <div class="mb-3">
+                        <a href="{{ route('downloadTestData') }}" class="btn btn-primary">Download as CSV</a>
+                    </div>
                     <table class="table datatable">
                         <thead>
                             <tr>

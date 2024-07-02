@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Single;
+use App\Models\TestData;
+use App\Models\TrainData;
+use App\Models\Visitor;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +16,24 @@ class DashboardController extends Controller
 {
     public function admin()
     {
-        return view('admin.dashboard.index');
+
+{
+    // Ambil jumlah pengunjung dari database
+    $visitorCount = Visitor::distinct('ip_address')->count();
+
+    // Mengambil jumlah data test dan train
+    $data= [
+        'testDataCount' => TestData::count(),
+        'trainDataCount' => TrainData::count(), // Ganti dengan model dan method yang sesuai untuk menghitung data train
+        'visitorCount' => $visitorCount
+    ];
+
+    // Kirim data ke view 'admin.dashboard.index'
+    return view('admin.dashboard.index', $data);
+}
+
     }
+
 
     public function testaja()
     {
@@ -42,7 +61,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->withFragment('about');
+            return redirect()->back()->withErrors($validator)->withInput()->withFragment('sentiment');
         }
 
         $text = [
@@ -59,6 +78,7 @@ class DashboardController extends Controller
             Single::create([
                 'text' => $request->single,
                 'sentiment' => $data['sentiment'],
+                'status' => 'false'
             ]);
 
             // Kirim data ke view
@@ -67,15 +87,13 @@ class DashboardController extends Controller
                 'Analysis Berhasil Dilakukan!',
                 'sentiment' => $data['sentiment'],
                 'text' => $request->single,
-            ])->withFragment('about');
+            ])->withFragment('sentiment');
         } catch (\Exception $e) {
             return redirect()->route('guest.index')
                 ->withErrors(['error' => 'Error fetching data from API: ' . $e->getMessage()])
-                ->withFragment('about');
+                ->withFragment('sentiment');
         }
     }
-
-
 
     public function batchAnalysis(Request $request)
     {
@@ -89,7 +107,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->withFragment('about');
+            return redirect()->back()->withErrors($validator)->withInput()->withFragment('sentiment');
         }
 
         $client = new Client();
@@ -108,7 +126,7 @@ class DashboardController extends Controller
 
             // Memeriksa apakah file CSV memiliki kolom 'text'
             if (!in_array('text', $header)) {
-                return redirect()->back()->withErrors(['error' => 'File tidak memiliki kolom text'])->withFragment('about');
+                return redirect()->back()->withErrors(['error' => 'File tidak memiliki kolom text'])->withFragment('sentiment');
             }
 
             // Membaca semua baris dari kolom 'text'
@@ -117,7 +135,7 @@ class DashboardController extends Controller
 
             // Memeriksa apakah ada baris pada kolom 'text'
             if (empty($textColumn)) {
-                return redirect()->back()->withErrors(['error' => 'Kolom text tidak memiliki baris'])->withFragment('about');
+                return redirect()->back()->withErrors(['error' => 'Kolom text tidak memiliki baris'])->withFragment('sentiment');
             }
 
             $response = $client->post($url, [
@@ -137,6 +155,7 @@ class DashboardController extends Controller
                     Single::create([
                         'sentiment' => $data['sentiment'],
                         'text' => $data['text'],
+                        'status' => 'false'
                     ]);
                 }
 
@@ -144,12 +163,13 @@ class DashboardController extends Controller
                     'success' =>
                     'Analysis Berhasil Dilakukan!',
                     'response' => $responseData,
-                ])->withFragment('about');
+                ])->withFragment('sentiment');
             } else {
-                return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.'])->withFragment('about');
+                return redirect()->back()->withErrors(['error' => 'Gagal mengirimkan data ke server.'])->withFragment('sentiment');
             }
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withFragment('about');
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withFragment('sentiment');
         }
     }
+
 }

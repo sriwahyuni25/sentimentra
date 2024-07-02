@@ -47,6 +47,7 @@ Route::get('/history-analysis', [AnalysisController::class, 'historyAnalysis']);
 
 
 Route::get('/admin/testdata', [TestDataController::class, 'index'])->name('admin.testdata.index');
+Route::get('/download-test-data', [TestDataController::class, 'downloadTestData'])->name('downloadTestData');
 
 Route::get('/admin/traindata', [TrainDataController::class, 'index'])->name('admin.traindata.index');
 
@@ -60,6 +61,8 @@ Route::post('/textanalysis', [AnalysisController::class,'singleAnalysis']);
 // Route::post('/batchanalysis', [CobaController::class,'tambah']);
 Route::get('/historyanalysis', [AnalysisController::class, 'showData'])->name('show.data');
 Route::delete('/historyanalysisdel/delete/{id}', [AnalysisController::class, 'deleteData'])->name('delete.data');
+Route::get('/historyanalysisdel/falsestatus/{id}', [AnalysisController::class, 'falsestatus'])->name('false.status');
+Route::get('/historyanalysisdel/truestatus/{id}', [AnalysisController::class, 'truestatus'])->name('true.status');
 // Route::get('/historyanalysis', function (){
 //     return view('admin.historyanalysis.index');
 // });

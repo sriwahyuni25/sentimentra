@@ -322,7 +322,7 @@
 
         <div class="container footer-top">
             <div class="row gy-4">
-                <div class="col-lg-4 col-md-6 footer-about">
+                <div class="col-lg-4 col-md-6 footer-sentiment">
                     <a href="index.html" class="d-flex align-items-center">
                         <span class="sitename">Sentimentra</span>
                     </a>
@@ -398,8 +398,8 @@
     @include('template.component.style_js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            @if (session('fragment') === 'about' || (isset($fragment) && $fragment === 'about'))
-                var element = document.getElementById('about');
+            @if (session('fragment') === 'sentiment' || (isset($fragment) && $fragment === 'sentiment'))
+                var element = document.getElementById('sentiment');
                 if (element) {
                     element.scrollIntoView();
                 }

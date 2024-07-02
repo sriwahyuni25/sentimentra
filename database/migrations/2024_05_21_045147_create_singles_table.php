@@ -17,6 +17,7 @@ class CreateSinglesTable extends Migration
             $table->id();
             $table->string('text');
             $table->string('sentiment');
+            $table->string('status');
             $table->timestamps();
         });
     }

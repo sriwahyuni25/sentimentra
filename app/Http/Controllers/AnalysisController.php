@@ -135,9 +135,31 @@ class AnalysisController extends Controller
         try {
             $sentiments = Single::where('id', $id)->first();
             $sentiments->delete();
-            return back();
+            return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
         } catch (\Exception $e) {
             return back()->with($e->getMessage());
         }
+    }
+
+    public function falsestatus($id){
+        $params['status'] = 'true';
+        $status = Single::where('id', $id)->first();
+        if ($status->update($params)) {
+            return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+        } else {
+            return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+        }
+        return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+
+    }
+    public function truestatus($id){
+        $params['status'] = 'false';
+        $status = Single::where('id', $id)->first();
+        if ($status->update($params)) {
+            return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+        } else {
+            return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+        }
+        return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
     }
 }

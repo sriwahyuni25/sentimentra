@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TestData;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Http\Request;
 
 class TestDataController extends Controller
@@ -31,5 +32,35 @@ class TestDataController extends Controller
         }
 
         return redirect()->back()->with('error', 'Failed to remove data from testdata.');
+    }
+
+    public function downloadTestData()
+    {
+        $testData = TestData::all();
+
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=test-data.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $callback = function() use ($testData) {
+            $file = fopen('php://output', 'w');
+
+            // Headers
+            fputcsv($file, ['Text', 'Sentiment']);
+
+            // Data
+            foreach ($testData as $data) {
+                $sentiment = $data->sentiment == 1 ? 'positif' : 'negatif';
+                fputcsv($file, [$data->text, $sentiment]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }
