@@ -410,11 +410,11 @@
             new ApexCharts(document.querySelector("#praSentiment"), {
                 series: [{
                         name: 'Positif',
-                        data: [14, 80, 43, ]
+                        data: [717, 1268, 1342, ]
                     },
                     {
                         name: 'Negatif',
-                        data: [56, 55, 76, ]
+                        data: [1077, 1473, 1341, ]
                     }
                 ],
                 chart: {
@@ -462,11 +462,11 @@
             new ApexCharts(document.querySelector("#pemiluSentiment"), {
                 series: [{
                         name: 'Positif',
-                        data: [14, 80, 43, ]
+                        data: [953, 1460, 1316, ]
                     },
                     {
                         name: 'Negatif',
-                        data: [56, 55, 76, ]
+                        data: [1022, 1533, 1725, ]
                     }
                 ],
                 chart: {
@@ -514,11 +514,11 @@
             new ApexCharts(document.querySelector("#pascaSentiment"), {
                 series: [{
                         name: 'Positif',
-                        data: [14, 80, 43, ]
+                        data: [704, 1046, 1496, ]
                     },
                     {
                         name: 'Negatif',
-                        data: [56, 55, 76, ]
+                        data: [1197, 1468, 2960, ]
                     }
                 ],
                 chart: {

@@ -59,10 +59,7 @@ Route::post('/textanalysis', [AnalysisController::class,'singleAnalysis']);
 
 // Route::get('/batchanalysis', [CobaController::class,'index']);
 // Route::post('/batchanalysis', [CobaController::class,'tambah']);
-Route::get('/historyanalysis', [AnalysisController::class, 'showData'])->name('show.data');
-Route::delete('/historyanalysisdel/delete/{id}', [AnalysisController::class, 'deleteData'])->name('delete.data');
-Route::get('/historyanalysisdel/falsestatus/{id}', [AnalysisController::class, 'falsestatus'])->name('false.status');
-Route::get('/historyanalysisdel/truestatus/{id}', [AnalysisController::class, 'truestatus'])->name('true.status');
+
 // Route::get('/historyanalysis', function (){
 //     return view('admin.historyanalysis.index');
 // });
@@ -74,8 +71,7 @@ Route::get('/wordcloudviews', [WordcloudController::class,'index']);
 
 Route::post('/wordcloudaction', [WordcloudController::class,'wordcloudAction'] );
 
-Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
-Route::put('/profil/update', [ProfilController::class, 'update'])->name('profile.update');
+
 Route::middleware('auth')->group(function () {
 });
 
@@ -84,8 +80,21 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', LogoutController::class)->name('auth.logout');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard-sentimentra', [DashboardController::class,'admin']);
+    Route::middleware('admin')->group(function () {
+        Route::get('/testData', [TestDataController::class, 'testData'])->name('test.data');
+        Route::get('/trainData', [TrainDataController::class, 'trainData'])->name('train.data');
+        Route::get('/profile', [ProfilController::class, 'show'])->name('profile.show');
+        Route::post('/profile/edit', [ProfilController::class, 'edit'])->name('profile.edit');
+    });
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+Route::put('/profil/update', [ProfilController::class, 'update'])->name('profile.update');
+Route::get('/history', [AnalysisController::class, 'index'])->name('history');
+Route::get('/historyanalysis', [AnalysisController::class, 'showData'])->name('show.data');
+Route::delete('/historyanalysisdel/delete/{id}', [AnalysisController::class, 'deleteData'])->name('delete.data');
+Route::get('/historyanalysisdel/falsestatus/{id}', [AnalysisController::class, 'falsestatus'])->name('false.status');
+Route::get('/historyanalysisdel/truestatus/{id}', [AnalysisController::class, 'truestatus'])->name('true.status');
 });
-Route::get('/dashboard-sentimentra', [DashboardController::class,'admin']);
 
 
 // Public routes
@@ -97,13 +106,7 @@ Route::middleware('public')->group(function () {
 });
 
 
-Route::middleware('admin')->group(function () {
-    Route::get('/history', [AnalysisController::class, 'index'])->name('history');
-    Route::get('/testData', [TestDataController::class, 'testData'])->name('test.data');
-    Route::get('/trainData', [TrainDataController::class, 'trainData'])->name('train.data');
-    Route::get('/profile', [ProfilController::class, 'show'])->name('profile.show');
-    Route::post('/profile/edit', [ProfilController::class, 'edit'])->name('profile.edit');
-});
+
 
 Route::get('/test', [DashboardController::class, 'testaja']);
 Route::post('/admin/test', [DashboardController::class, 'test']);

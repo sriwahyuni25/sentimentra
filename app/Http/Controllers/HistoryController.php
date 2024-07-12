@@ -18,10 +18,10 @@ class HistoryController extends Controller
                 ['sentiment' => $this->mapSentimentToInteger($sentiment->sentiment), 'text' => $sentiment->text]
             );
 
-            return redirect()->back()->with('success', 'Data added to testdata successfully!');
+            return redirect()->back()->with('success', 'Data berhasil ditambahlan ke TestData!');
         }
 
-        return redirect()->back()->with('error', 'Failed to add data to testdata.');
+        return redirect()->back()->with('error', 'Gagal menambahkan data ke TestData.');
     }
 
     public function deleteFromTestData($id)
@@ -31,11 +31,19 @@ class HistoryController extends Controller
         if ($testdata) {
             $testdata->delete();
 
-            return redirect()->back()->with('success', 'Data removed from testdata successfully!');
+            return redirect()->back()->with('success', 'Data berhasil dihapus dari TestData!');
         }
 
-        return redirect()->back()->with('error', 'Failed to remove data from testdata.');
+        return redirect()->back()->with('error', 'Gagal menghapus data dari TestData.');
     }
+
+    // Contoh penghapusan data pada controller
+public function delete($id)
+{
+    // Proses penghapusan data
+
+    return redirect()->back()->with('success', 'Data berhasil dihapus.');
+}
 
     private function mapSentimentToInteger($sentiment)
     {

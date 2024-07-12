@@ -135,7 +135,7 @@ class AnalysisController extends Controller
         try {
             $sentiments = Single::where('id', $id)->first();
             $sentiments->delete();
-            return back()->withErrors(['error' => 'Gagal mengirimkan data ke server.']);
+            return back()->with('success','Data berhasil Dihapus.');
         } catch (\Exception $e) {
             return back()->with($e->getMessage());
         }
