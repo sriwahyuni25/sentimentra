@@ -70,7 +70,7 @@ class DashboardController extends Controller
             ],
         ];
         $client = new Client();
-        $url = 'http://127.0.0.1:5000/predict';
+        $url = 'http://train-data.sentimentra.my.id/predict';
         try {
             $response = $client->request('POST', $url, $text);
             $data = json_decode($response->getBody(), true);
@@ -111,7 +111,7 @@ class DashboardController extends Controller
         }
 
         $client = new Client();
-        $url = 'http://127.0.0.1:5000/predict_csv';
+        $url = 'http://train-data.sentimentra.my.id/predict_csv';
 
         try {
             $file = $request->file('file');
