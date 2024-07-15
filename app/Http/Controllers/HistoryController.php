@@ -12,6 +12,7 @@ class HistoryController extends Controller
     {
         $sentiment = Single::find($request->id);
 
+
         if ($sentiment) {
             $testdata = TestData::firstOrCreate(
                 ['single_id' => $sentiment->id],

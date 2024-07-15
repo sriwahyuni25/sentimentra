@@ -130,14 +130,25 @@ class AnalysisController extends Controller
         return view('admin.historyanalysis.index', compact('sentiments'));
     }
 
+    // public function deleteData($id)
+    // {
+    //     try {
+    //         $sentiments = Single::where('id', $id)->first();
+    //         $sentiments->delete();
+    //         return back()->with('success','Data berhasil Dihapus.');
+    //     } catch (\Exception $e) {
+    //         return back()->with($e->getMessage());
+    //     }
+    // }
+
     public function deleteData($id)
     {
         try {
-            $sentiments = Single::where('id', $id)->first();
-            $sentiments->delete();
-            return back()->with('success','Data berhasil Dihapus.');
+            $sentiment = Single::findOrFail($id);
+            $sentiment->delete();
+            return back()->with('success', 'Data berhasil dihapus.');
         } catch (\Exception $e) {
-            return back()->with($e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
