@@ -11,3 +11,4 @@ class Single extends Model
 
     protected $fillable = ['text', 'sentiment','status'];
 }
+
