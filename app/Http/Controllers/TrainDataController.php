@@ -11,7 +11,7 @@ class TrainDataController extends Controller
 {
     public function index()
     {
-        $data['trainData'] = TrainData::limit(10)->orderBy('id', 'desc')->get();
+        $data['trainData'] = TrainData::get();
         return view('admin.traindata.index', $data);
     }
 

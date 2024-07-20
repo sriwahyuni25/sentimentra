@@ -12,7 +12,7 @@ class TestDataController extends Controller
 {
     public function index()
     {
-        $data['testData'] = TestData::limit(10)->orderBy('id', 'desc')->get();
+        $data['testData'] = TestData::get();
         return view('admin.testdata.index', $data);
     }
 
