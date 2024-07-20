@@ -26,21 +26,44 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <table class="table datatable">
+                    <div class="d-none gap-3 buttons">
+                        <form action="{{ url('/multitotestdata') }}" class="mb-3" method="post">
+                            @csrf
+                            <input type="hidden" name="id" id="multiId1" value="">
+                            <button class="btn btn-sm btn-primary">Add Multi to TrainData</button>
+                        </form>
+                        <form action="{{ url('/deletemultifromtestdata') }}" class="mb-3" method="post">
+                            @csrf
+                            <input type="hidden" name="id" id="multiId2" value="">
+                            <button class="btn btn-sm btn-danger">Delete Multi from TrainData</button>
+                        </form>
+                    </div>
+                    <table class="table datatable1">
                         <thead>
                             <tr>
-                                <th><b>#</b></th>
+                                <th>
+                                    <div class="form-check d-inline">
+                                        <input class="form-check-input" type="checkbox" value="" id="checkall">
+                                    </div>
+                                    <b>#</b>
+                                </th>
                                 <th>Start Date</th>
                                 <th>Text</th>
                                 <th>Sentiment</th>
                                 <th>Action</th>
-                                <th>Add To TestData</th>
+                                <th>Add To TrainData</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($sentiments as $sentiment)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        <div class="form-check d-inline">
+                                            <input class="form-check-input checkall" type="checkbox"
+                                                value="{{ $sentiment->id }}">
+                                        </div>
+                                        {{ $loop->iteration }}
+                                    </td>
                                     <td>{{ $sentiment->created_at }}</td>
                                     <td>{{ $sentiment->text }}</td>
                                     <td>{{ $sentiment->sentiment }}</td>
@@ -82,7 +105,7 @@
                                     </td>
                                     <td>
                                         @php
-                                            $existsInTestData = \App\Models\TestData::where(
+                                            $existsInTestData = \App\Models\TrainData::where(
                                                 'single_id',
                                                 $sentiment->id,
                                             )->exists();
@@ -104,7 +127,7 @@
                                                 <input type="hidden" name="id" value="{{ $sentiment->id }}">
                                                 <button type="submit" class="btn btn-primary btn-sm add-btn"
                                                     data-id="{{ $sentiment->id }}">
-                                                    Add to TestData
+                                                    Add to TrainData
                                                 </button>
                                             </form>
                                         @endif
@@ -124,6 +147,30 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         $(document).ready(function() {
+            const datatables = document.querySelectorAll(".datatable1")
+            datatables.forEach(datatable => {
+                new simpleDatatables.DataTable(datatable, {
+                    perPageSelect: [5, 10, 15, ["All", -1]],
+                    columns: [{
+                            select: 0,
+                            sortable: false
+                        }, {
+                            select: 2,
+                            sortSequence: ["desc", "asc"]
+                        },
+                        {
+                            select: 3,
+                            sortSequence: ["desc"]
+                        },
+                        {
+                            select: 4,
+                            cellClass: "green",
+                            headerClass: "red"
+                        }
+                    ]
+                });
+            })
+
             // Handling delete action
             $('.delete-btn').click(function() {
                 var sentimentId = $(this).data('id');
@@ -143,6 +190,42 @@
                 });
             });
 
+            let ids = []
+            $("#checkall").on("click", function() {
+                if ($(this).is(":checked")) {
+                    $(".checkall").prop("checked", true)
+                    for (let index = 0; index < $(".checkall").length; index++) {
+                        const check = $(".checkall")[index];
+                        ids.push(check.value)
+                    }
+                    $("#multiId1").val(ids.join(", "))
+                    $("#multiId2").val(ids.join(", "))
+                    $(".buttons").removeClass("d-none").addClass("d-flex")
+                } else {
+                    $(".checkall").prop("checked", false)
+                    $("#multiId1").val("")
+                    $("#multiId2").val("")
+                    ids = []
+                    $(".buttons").addClass("d-none").removeClass("d-flex")
+                }
+            })
+
+            $("body").on("click", ".checkall", function() {
+                if ($(this).is(":checked")) {
+                    ids.push($(this).val())
+                    $(".buttons").removeClass("d-none").addClass("d-flex")
+                } else {
+                    var index = ids.indexOf($(this).val());
+                    if (index !== -1) {
+                        ids.splice(index, 1);
+                    }
+                }
+                if (ids.length < 1) {
+                    $(".buttons").addClass("d-none").removeClass("d-flex")
+                }
+                $("#multiId1").val(ids.join(", "))
+                $("#multiId2").val(ids.join(", "))
+            })
 
             // Handling remove from TestData action
             // $('.remove-btn').click(function() {

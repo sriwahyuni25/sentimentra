@@ -78,8 +78,8 @@
                             apakah teks tersebut bersifat positif atau negatif</p>
                     </div>
                     <div class="col-lg-6 order-1 order-lg-2 lp" data-aos="zoom-out" data-aos-delay="200">
-                        <img src="{{ asset('arsha/assets/img/lp.png') }}" class="img-fluid animated"
-                            alt="" style="width: 90%;">
+                        <img src="{{ asset('arsha/assets/img/lp.png') }}" class="img-fluid animated" alt=""
+                            style="width: 90%;">
                     </div>
                 </div>
             </div>
@@ -116,57 +116,26 @@
                             </ul>
                         </div>
                     @endif
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="single-tab" data-toggle="tab" href="#single" role="tab"
-                                aria-controls="single" aria-selected="true">Single</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="batch-tab" data-toggle="tab" href="#batch" role="tab"
-                                aria-controls="batch" aria-selected="false">Batch</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="single" role="tabpanel"
-                            aria-labelledby="single-tab">
-
-                            <!-- General Form Elements -->
-                            <form action="{{ url('/guest/single-analysis') }}" method="POST">
-                                @csrf
-                                <div class="row mb-2 mt-3">
-                                    <div class="col-sm-12">
-                                        <input type="text" name="single" class="form-control"
-                                            placeholder="Masukkan Text" value="{{ old('single') }}">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary col-sm-12 mb-2">Process</button>
-                                        <button type="reset" class="btn btn-secondary col-sm-12">Reset</button>
-                                    </div>
-                                </div>
-                            </form>
+                    <form action="{{ url('/guest/single-analysis') }}" class="contain" method="POST">
+                        @csrf
+                        <div class="row mb-2 mt-3 duplikasi" id="gandakan-0" data-id="0">
+                            <div class="col-sm-11  mb-3">
+                                <input type="text" name="texts[]" class="form-control" placeholder="Masukkan Text"
+                                    value="{{ old('single') }}">
+                            </div>
+                            <div class="col-sm mb-3">
+                                <a href="#" class="text-danger fs-3 delete-input">&times;</a>
+                            </div>
                         </div>
-                        <div class="tab-pane fade" id="batch" role="tabpanel" aria-labelledby="batch-tab">
-                            <!-- General Form Elements -->
-                            <form action="{{ url('/guest/batch-analysis') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="row mb-2 mt-3">
-                                    <div class="col-sm-12">
-                                        <input class="form-control" type="file" id="formFile" name="file">
-                                    </div>
-                                </div>
 
-                                <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary col-sm-12">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="row mb-3">
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-warning col-sm-12 mb-2 btn-add">Add Text</button>
+                                <button type="submit" class="btn btn-primary col-sm-12 mb-2">Process</button>
+                                <button type="reset" class="btn btn-secondary col-sm-12">Reset</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
 
                     @if (session('sentiment') && session('text'))
                         <div class="row mb-3 mt-3">
@@ -314,7 +283,8 @@
                 <div class="row justify-content-center text-center">
                     <div class="col-lg-6">
                         <h4>Terimakasih Telah Mengunjungi Sentimentra</h4>
-                        <p>Kami berharap aplikasi ini dapat membantu Anda dalam menganalisis sentimen. Dukungan Anda sangat berarti bagi kami.</p>
+                        <p>Kami berharap aplikasi ini dapat membantu Anda dalam menganalisis sentimen. Dukungan Anda
+                            sangat berarti bagi kami.</p>
                     </div>
                 </div>
             </div>
@@ -346,7 +316,8 @@
 
                 <div class="col-lg-4 col-md-12">
                     <h4>Ikuti Kami</h4>
-                    <p>Tetap terhubung dengan kami melalui media sosial untuk mendapatkan update terbaru dan informasi menarik lainnya:</p>
+                    <p>Tetap terhubung dengan kami melalui media sosial untuk mendapatkan update terbaru dan informasi
+                        menarik lainnya:</p>
                     <div class="social-links d-flex">
                         <a href=""><i class="bi bi-twitter-x"></i></a>
                         <a href=""><i class="bi bi-facebook"></i></a>
@@ -359,7 +330,8 @@
         </div>
 
         <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">Sentimentra</strong> <span>All Rights Reserved</span>
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">Sentimentra</strong> <span>All Rights
+                    Reserved</span>
             </p>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
@@ -561,7 +533,64 @@
             }).render();
         });
     </script>
+    <script>
+        $(function() {
+            var counter = $(".duplikasi:last").data("id");
+            $("#gandakan-" + counter).find("a").hide();
 
+            $(".btn-add").on("click", function(e) {
+                e.preventDefault();
+                var editElm;
+                counter++;
+
+                $(".duplikasi:last").clone(true)
+                    .map(function() {
+                        editElm = $(this)
+                            .attr('id', 'gandakan-' + counter)
+                            .attr('data-id', counter)
+                    });
+
+
+                if ($("#gandakan-" + (counter - 1)).length) {
+                    $("#gandakan-" + (counter - 1)).after(editElm);
+                } else {
+                    $("#gandakan-0").after(editElm);
+                }
+
+                $("#gandakan-" + counter).find('input').val('');
+
+                $('.duplikasi').find("a").show();
+                $("#gandakan-" + counter).find("a").hide();
+            })
+
+            $(document).undelegate(".delete-input", "click").delegate(".delete-input", "click", function(e) {
+                e.preventDefault()
+                $(this).parents(".duplikasi").remove()
+            })
+
+            // $(".contain").on("submit", function(e) {
+            //     e.preventDefault()
+
+            //     for (let index = 0; index < $(this).find('input[name="texts[]"]').length; index++) {
+            //         const input = $(this).find('input[name="texts[]"]')[index];
+
+            //     }
+            //     // $.ajax({
+            //     //     url: "https://train-data.sentimentra.my.id/predicts",
+            //     //     method: "post",
+            //     //     data: $(this).serialize(),
+            //     //     dataType: "json",
+            //     //     contentType: "application/json",
+            //     //     success: function(response) {
+            //     //         console.log(response);
+            //     //     },
+            //     //     error: function(error) {
+            //     //         console.log(error);
+            //     //     }
+            //     // })
+            // })
+        })
+    </script>
 </body>
 
 </html>

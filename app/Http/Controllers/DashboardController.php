@@ -15,23 +15,20 @@ use League\Csv\Reader;
 class DashboardController extends Controller
 {
     public function admin()
-    {
+    { {
+            // Ambil jumlah pengunjung dari database
+            $visitorCount = Visitor::distinct('ip_address')->count();
 
-{
-    // Ambil jumlah pengunjung dari database
-    $visitorCount = Visitor::distinct('ip_address')->count();
+            // Mengambil jumlah data test dan train
+            $data = [
+                'testDataCount' => TestData::count(),
+                'trainDataCount' => TrainData::count(), // Ganti dengan model dan method yang sesuai untuk menghitung data train
+                'visitorCount' => $visitorCount
+            ];
 
-    // Mengambil jumlah data test dan train
-    $data= [
-        'testDataCount' => TestData::count(),
-        'trainDataCount' => TrainData::count(), // Ganti dengan model dan method yang sesuai untuk menghitung data train
-        'visitorCount' => $visitorCount
-    ];
-
-    // Kirim data ke view 'admin.dashboard.index'
-    return view('admin.dashboard.index', $data);
-}
-
+            // Kirim data ke view 'admin.dashboard.index'
+            return view('admin.dashboard.index', $data);
+        }
     }
 
 
@@ -69,8 +66,10 @@ class DashboardController extends Controller
                 'text' => $request->single,
             ],
         ];
-        $client = new Client();
-        $url = 'http://train-data.sentimentra.my.id/predict';
+        $client = new Client([
+            'verify' => false,
+        ]);
+        $url = 'https://train-data.sentimentra.my.id/predict';
         try {
             $response = $client->request('POST', $url, $text);
             $data = json_decode($response->getBody(), true);
@@ -87,6 +86,56 @@ class DashboardController extends Controller
                 'Analysis Berhasil Dilakukan!',
                 'sentiment' => $data['sentiment'],
                 'text' => $request->single,
+            ])->withFragment('sentiment');
+        } catch (\Exception $e) {
+            return redirect()->route('guest.index')
+                ->withErrors(['error' => 'Error fetching data from API: ' . $e->getMessage()])
+                ->withFragment('sentiment');
+        }
+    }
+
+    public function multiAnalysis(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'texts' => 'required|array|min:1',
+            'texts.*' => 'required|string|min:1',
+        ], [
+            'texts.*.required' => 'Text tidak boleh kosong.',
+            'texts.*.string' => 'Text harus berupa string.',
+            'texts.*.min' => 'Text tidak boleh kosong.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->withFragment('sentiment');
+        }
+
+
+        $text = [
+            'json' => [
+                'texts' => $request->texts,
+            ],
+        ];
+        $client = new Client([
+            'verify' => false,
+        ]);
+        $url = 'https://train-data.sentimentra.my.id/predicts';
+        try {
+            $response = $client->request('POST', $url, $text);
+            $responseData = json_decode($response->getBody(), true);
+            // Simpan hasil analisis ke database
+            foreach ($responseData as $data) {
+                Single::create([
+                    'sentiment' => $data['sentiment'],
+                    'text' => $data['text'],
+                    'status' => 'false'
+                ]);
+            }
+
+            // Kirim data ke view
+            return redirect()->route('guest.index')->with([
+                'success' =>
+                'Analysis Berhasil Dilakukan!',
+                'response' => $responseData,
             ])->withFragment('sentiment');
         } catch (\Exception $e) {
             return redirect()->route('guest.index')
@@ -171,5 +220,4 @@ class DashboardController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withFragment('sentiment');
         }
     }
-
 }

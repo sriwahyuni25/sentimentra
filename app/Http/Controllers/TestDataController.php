@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\TestData;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Http\Request;
+use League\Csv\Reader;
+use League\Csv\Statement;
 
 class TestDataController extends Controller
 {
     public function index()
     {
-        $data['testData'] = TestData::all();
+        $data['testData'] = TestData::limit(10)->orderBy('id', 'desc')->get();
         return view('admin.testdata.index', $data);
     }
 
@@ -34,6 +36,41 @@ class TestDataController extends Controller
         return redirect()->back()->with('error', 'Failed to remove data from testdata.');
     }
 
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required',
+        ]);
+
+        $file = $request->file('file');
+        if ($file->getClientOriginalExtension() != "csv") {
+            return redirect()->back()->with("error", "File required csv.");
+        }
+
+        $csv = Reader::createFromPath($file->getRealPath(), 'r');
+        $csv->setHeaderOffset(0);
+        foreach (["text", "sentiment"] as $header) {
+            if (!in_array($header, $csv->getHeader())) {
+                return redirect()->back()->with("error", "Header tidak sesuai.");
+            }
+        }
+
+        $stmt = (new Statement())
+            ->offset(0);
+
+        $records = $stmt->process($csv);
+
+        foreach ($records as $record) {
+            TestData::create([
+                "text" => $record["text"],
+                "sentiment" => $this->mapSentimentToInteger($record["sentiment"]),
+                "single_id" => 0
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Data added to testdata successfully!');
+    }
+
     public function downloadTestData()
     {
         $testData = TestData::all();
@@ -46,7 +83,7 @@ class TestDataController extends Controller
             "Expires" => "0"
         );
 
-        $callback = function() use ($testData) {
+        $callback = function () use ($testData) {
             $file = fopen('php://output', 'w');
 
             // Headers
@@ -62,5 +99,15 @@ class TestDataController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    private function mapSentimentToInteger($sentiment)
+    {
+        $map = [
+            'positif' => 1,
+            'negatif' => 0,
+        ];
+
+        return $map[$sentiment] ?? 0;  // Default to 0 if sentiment is not found
     }
 }

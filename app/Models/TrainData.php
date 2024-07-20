@@ -9,6 +9,7 @@ class TrainData extends Model
 {
     use HasFactory;
 
-    protected $table='traindata';
-    protected $guarded=[''];
+    protected $table = 'traindata';
+    protected $guarded = [''];
+    public $timestamps = false;
 }
