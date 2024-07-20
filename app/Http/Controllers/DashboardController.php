@@ -139,7 +139,7 @@ class DashboardController extends Controller
             ])->withFragment('sentiment');
         } catch (\Exception $e) {
             return redirect()->route('guest.index')
-                ->withErrors(['error' => 'Error fetching data from API: ' . $e->getMessage()])
+                ->withErrors(['error' => 'Training Data Is Not Available.'])
                 ->withFragment('sentiment');
         }
     }
