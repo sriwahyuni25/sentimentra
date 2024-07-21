@@ -51,6 +51,8 @@ Route::get('/download-test-data', [TestDataController::class, 'downloadTestData'
 
 Route::get('/admin/traindata', [TrainDataController::class, 'index'])->name('admin.traindata.index');
 Route::post('/admin/testdata/import', [TestDataController::class, 'import'])->name('test.import');
+Route::post('/admin/testdata/manydelete', [TestDataController::class, 'manyDelete'])->name('test.manydelete');
+Route::post('/admin/traindata/manydelete', [TrainDataController::class, 'manyDelete'])->name('train.manydelete');
 Route::post('/admin/traindata/import', [TrainDataController::class, 'import'])->name('train.import');
 
 // Route::post('/wordcloud/process', 'WordCloudController@process')->name('wordcloud.process');

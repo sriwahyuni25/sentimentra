@@ -54,9 +54,22 @@ class TrainDataController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Data added to testdata successfully!');
+        return redirect()->back()->with('success', 'Data added to traindata successfully!');
     }
 
+    public function manyDelete(Request $request)
+    {
+        $ids = explode(", ", $request->id);
+        $sentiments = TrainData::whereIn('id', $ids)->get();
+
+        if ($sentiments->count() > 0) {
+            TrainData::whereIn('id', $ids)->delete();
+
+            return redirect()->back()->with('success', 'Data berhasil dihapus dari TrainData!');
+        }
+
+        return redirect()->back()->with('error', 'Gagal menghapus data dari TrainData.');
+    }
 
     private function mapSentimentToInteger($sentiment)
     {

@@ -101,6 +101,20 @@ class TestDataController extends Controller
         return response()->stream($callback, 200, $headers);
     }
 
+    public function manyDelete(Request $request)
+    {
+        $ids = explode(", ", $request->id);
+        $sentiments = TestData::whereIn('id', $ids)->get();
+
+        if ($sentiments->count() > 0) {
+            TestData::whereIn('id', $ids)->delete();
+
+            return redirect()->back()->with('success', 'Data berhasil dihapus dari TestData!');
+        }
+
+        return redirect()->back()->with('error', 'Gagal menghapus data dari TestData.');
+    }
+
     private function mapSentimentToInteger($sentiment)
     {
         $map = [

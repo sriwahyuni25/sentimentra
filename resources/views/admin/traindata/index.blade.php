@@ -40,11 +40,22 @@
                                 <a href="" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Import Data CSV</a>
                             </div>
+                            <form action="{{ url('/admin/traindata/manydelete') }}" class="mb-3 delete d-none"
+                                method="post">
+                                @csrf
+                                <input type="hidden" name="id" id="multiId" value="">
+                                <button class="btn btn-danger">Delete TrainData</button>
+                            </form>
                         </div>
-                        <table class="table datatable">
+                        <table class="table datatable1">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th>
+                                        <div class="form-check d-inline">
+                                            <input class="form-check-input" type="checkbox" value="" id="checkall">
+                                        </div>
+                                        No
+                                    </th>
                                     <th>Text</th>
                                     <th>Sentiment</th>
                                     {{-- <th>Action</th> --}}
@@ -53,7 +64,13 @@
                             <tbody>
                                 @foreach ($trainData as $data)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            <div class="form-check d-inline">
+                                                <input class="form-check-input checkall" type="checkbox"
+                                                    value="{{ $data->id }}">
+                                            </div>
+                                            {{ $loop->iteration }}
+                                        </td>
                                         <td>{{ $data->text }}</td>
                                         <td>
                                             @if ($data->sentiment == 1)
@@ -146,5 +163,85 @@
                 });
             })
         })
+    </script>
+    <script>
+        $(document).ready(function() {
+            const datatables = document.querySelectorAll(".datatable1")
+            datatables.forEach(datatable => {
+                new simpleDatatables.DataTable(datatable, {
+                    perPageSelect: [5, 10, 15, ["All", -1]],
+                    columns: [{
+                            select: 0,
+                            sortable: false
+                        }, {
+                            select: 2,
+                            sortSequence: ["desc", "asc"]
+                        },
+                        {
+                            select: 3,
+                            sortSequence: ["desc"]
+                        },
+                        {
+                            select: 4,
+                            cellClass: "green",
+                            headerClass: "red"
+                        }
+                    ]
+                });
+            })
+
+            // Handling delete action
+            $('.delete-btn').click(function() {
+                var sentimentId = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Apa Anda Yakin?',
+                    text: "Anda tidak akan dapat mengembalikannya!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, Hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#delete-form-' + sentimentId).submit();
+                    }
+                });
+            });
+
+            let ids = []
+            $("#checkall").on("click", function() {
+                if ($(this).is(":checked")) {
+                    $(".checkall").prop("checked", true)
+                    for (let index = 0; index < $(".checkall").length; index++) {
+                        const check = $(".checkall")[index];
+                        ids.push(check.value)
+                    }
+                    $("#multiId").val(ids.join(", "))
+                    $(".delete").removeClass("d-none").addClass("d-flex")
+                } else {
+                    $(".checkall").prop("checked", false)
+                    $("#multiId").val("")
+                    ids = []
+                    $(".delete").addClass("d-none").removeClass("d-flex")
+                }
+            })
+
+            $("body").on("click", ".checkall", function() {
+                if ($(this).is(":checked")) {
+                    ids.push($(this).val())
+                    $(".delete").removeClass("d-none").addClass("d-flex")
+                } else {
+                    var index = ids.indexOf($(this).val());
+                    if (index !== -1) {
+                        ids.splice(index, 1);
+                    }
+                }
+                if (ids.length < 1) {
+                    $(".delete").addClass("d-none").removeClass("d-flex")
+                }
+                $("#multiId").val(ids.join(", "))
+            })
+        });
     </script>
 @endsection
