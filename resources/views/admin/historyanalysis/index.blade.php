@@ -117,7 +117,7 @@
                                                 <button id="remove-btn-{{ $sentiment->id }}" type="submit"
                                                     class="btn btn-danger btn-sm remove-btn"
                                                     data-id="{{ $sentiment->id }}">
-                                                    Remove from TestData
+                                                    Remove from TrainData
                                                 </button>
                                             </form>
                                         @else
